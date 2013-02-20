@@ -43,7 +43,7 @@ func ExampleWriter_noFormat() {
 		log.Fatal(err)
 	}
 	fmt.Println(buf)
-	// Output:
+	// Output Example:
 	// method:POST	host:127.0.0.1	time:Mon, 02 Jan 2006 15:04:05 MST
 	// host:127.0.0.1	time:Mon, 02 Jan 2006 15:05:05 MST
 	// time:Mon, 02 Jan 2006 15:06:05 MST	host:127.0.0.1	status:404	method:GET

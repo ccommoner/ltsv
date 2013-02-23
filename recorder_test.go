@@ -13,12 +13,12 @@ type TestLogData struct {
 	method string
 }
 
-func ExampleEncoder_Encode() {
+func ExampleRecorder_Encode() {
 	logData := TestLogData{"Mon, 02 Jan 2006 15:04:05 MST", "127.0.0.1", "POST"}
 
 	buf := new(bytes.Buffer)
-	encoder := NewEncoder(buf)
-	if err := encoder.Encode(logData); err != nil {
+	encoder := NewRecorder(buf)
+	if err := encoder.Record(logData); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(buf)

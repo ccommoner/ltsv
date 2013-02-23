@@ -8,15 +8,15 @@ import (
 )
 
 // During the experiment!!!!!!
-type Encoder struct {
+type Recorder struct {
 	writer *Writer
 }
 
-func NewEncoder(w io.Writer) *Encoder {
-	return &Encoder{NewWriter(w)}
+func NewRecorder(w io.Writer) *Recorder {
+	return &Recorder{NewWriter(w)}
 }
 
-func (enc *Encoder) Encode(v interface{}) error {
+func (enc *Recorder) Record(v interface{}) error {
 	argType := reflect.TypeOf(v)
 	if argType.Kind() != reflect.Struct {
 		return errors.New("argument is other than struct")
@@ -31,8 +31,6 @@ func (enc *Encoder) Encode(v interface{}) error {
 	argVal := reflect.ValueOf(v)
 	record := map[string]string{}
 	for _, label := range format {
-		// TODO?: If the field is not a string, should occur an error?
-		// Or Marshal JSON?
 		record[label] = argVal.FieldByName(label).String()
 	}
 	enc.writer.Format = format

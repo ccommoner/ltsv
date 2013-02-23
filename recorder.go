@@ -1,8 +1,9 @@
-// encoder.go
+// recorder.go
 package ltsv
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"reflect"
 )
@@ -16,7 +17,11 @@ func NewRecorder(w io.Writer) *Recorder {
 	return &Recorder{NewWriter(w)}
 }
 
-func (enc *Recorder) Record(v interface{}) error {
+func (rec *Recorder) Flush() {
+	rec.writer.Flush()
+}
+
+func (rec *Recorder) Record(v interface{}) error {
 	argType := reflect.TypeOf(v)
 	if argType.Kind() != reflect.Struct {
 		return errors.New("argument is other than struct")
@@ -30,13 +35,14 @@ func (enc *Recorder) Record(v interface{}) error {
 
 	argVal := reflect.ValueOf(v)
 	record := map[string]string{}
-	for _, label := range format {
-		record[label] = argVal.FieldByName(label).String()
+	for i := 0; i < argType.NumField(); i++ {
+		if argVal.Type().Field(i).PkgPath == "" {
+			record[format[i]] = fmt.Sprint(argVal.Field(i).Interface())
+		}
 	}
-	enc.writer.Format = format
-	if err := enc.writer.Write(record); err != nil {
+	rec.writer.Format = format
+	if err := rec.writer.Write(record); err != nil {
 		return nil
 	}
-	enc.writer.Flush()
 	return nil
 }

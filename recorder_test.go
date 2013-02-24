@@ -32,5 +32,5 @@ func ExampleRecorder_Record() {
 
 	fmt.Println(buf)
 	// Output:
-	// Time:0001-01-01 00:00:00 +0000 UTC	Host:127.0.0.1	Method:POST
+	// Req:{100 0001-01-01 00:00:00 +0000 UTC}	Host:127.0.0.1	Method:POST
 }
